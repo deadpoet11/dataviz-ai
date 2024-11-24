@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 
 <div
@@ -8,14 +10,14 @@
   <div class="hero-overlay bg-opacity-60"></div>
 
   <div class="hero-content text-neutral-content text-center flex flex-col items-center relative w-full">
-    
+
     <!-- Back Button -->
     <a href="{% url 'visualizer:index' %}" 
        class="btn btn-outline btn-sm text-white border-white absolute top-[-210px] left-0">
-      Back
+      Back to Menu
     </a>
 
-    <!-- Error Handling -->
+    <!-- Messages Section -->
     {% if messages %}
       <div class="w-full max-w-lg mx-auto mb-6">
         {% for message in messages %}
@@ -28,25 +30,24 @@
 
     <!-- Title -->
     <div>
-      <h1 class="text-5xl font-bold mb-4">Upload your files here</h1>
-      <h3 class="text-lg text-gray-300 mb-8">The files may be CSV, JSON, etc.</h3>
+      <h1 class="text-5xl font-bold mb-8">Here is your result!</h1>
     </div>
 
-    <!-- File Upload -->
-    <form action="{% url 'visualizer:create_upload' %}" method="post" enctype="multipart/form-data" class="w-full max-w-lg mx-auto">
-      {% csrf_token %}
-      
-      <div class="mb-6">
-        <label for="file" class="block text-lg font-medium text-gray-200">Upload File</label>
-        <input required id="file" type="file" name="file" class="file-input file-input-bordered w-full mt-2" />
+    <!-- Video Display -->
+    {% if vid_path %}
+      <div class="w-full max-w-lg mx-auto">
+        <video controls class="w-full rounded-md shadow-lg">
+          <source src="{% static vid_path %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
-      
-      <!-- Submit -->
-      <div class="mt-6">
-        <button type="submit" class="btn btn-primary w-full">Generate Graphics</button>
+    {% else %}
+      <div class="text-lg text-gray-300 mt-6">
+        No video available to display.
       </div>
-    </form>
+    {% endif %}
   </div>
 </div>
 
 {% endblock %}
+    
